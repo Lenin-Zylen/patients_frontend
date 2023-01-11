@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -17,18 +17,35 @@ import {
 } from "reactstrap";
 
 import classnames from "classnames";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BreadCrumbs from "../../../components/BreadCrumbs/BreadCrumbs";
 import { CREATE_PATIENT } from "../../../store/Types";
 import { useDispatch, useSelector } from "react-redux";
 
 const CreatePatient = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState(1);
   const [activeTabVartical, setActiveTabVartical] = useState(1);
   const [passedSteps, setPassedSteps] = useState([1]);
   const [passedStepsVertical, setPassedStepsVertical] = useState([1]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const patientError = useSelector((state) => state.PatientReducer.error);
+  const patientSuccess = useSelector(
+    (state) => state.PatientReducer.apiSuccess
+  );
+  const patientLoader = useSelector((state) => state.PatientReducer.loader);
+
+  useEffect(() => {
+    if (isSubmitted) {
+      if (patientSuccess && !patientError) {
+        navigate("/patient");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [patientLoader, patientError, isSubmitted]);
 
   const [formData, setFormData] = useState({
     firstname: "",
@@ -104,18 +121,12 @@ const CreatePatient = () => {
   }
 
   const onSubmit = () => {
+    dispatch({ type: "patient/resetPatientError" });
+    dispatch({ type: "patient/setLoaderTrue" });
+    dispatch({ type: "patient/resetApiSuccess" });
     dispatch({ type: CREATE_PATIENT, payload: formData });
-
-    console.log({
-      formData,
-      preferredContactMethod,
-      preferredContactConfirmation,
-      preferredContactRecall,
-      studentStatus,
-    });
+    setIsSubmitted(true);
   };
-
-  console.log({ formData });
 
   return (
     <div>

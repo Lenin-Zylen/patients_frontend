@@ -34,7 +34,6 @@ export function* getPatientsSaga() {
 
 export function* createPatientSaga(action) {
   try {
-    console.log(action.payload, "<---------------");
     const response = yield createPatientsAPI(action.payload);
     yield put(addPatientSlice(response.data));
     toast.success("Patient Added Sucessfully");
