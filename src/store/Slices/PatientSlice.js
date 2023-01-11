@@ -58,6 +58,11 @@ export const PatientSlice = createSlice({
   },
 });
 
-export const { getAllPatientsSlice, resetPatientStateSlice } = PatientSlice.actions;
+export const {
+  getAllPatientsSlice,
+  resetPatientStateSlice,
+  addPatientSlice,
+  setPatientError,
+} = PatientSlice.actions;
 
 export default PatientSlice.reducer;
