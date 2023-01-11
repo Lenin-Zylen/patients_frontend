@@ -4,6 +4,8 @@ import Routing from "./routers/Routing";
 import { createBrowserHistory } from "history";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// Import scss
+import "./assets/scss/theme.scss";
 
 const defaultHistory = createBrowserHistory();
 
